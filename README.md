@@ -1,2 +1,2 @@
 # 2024-CapStone
- PQC implementation in Hardware
+ Detect Vehicle registration plate which illegal parked at alley with FPGA + CNN
