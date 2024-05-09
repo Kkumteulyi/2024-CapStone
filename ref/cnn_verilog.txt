@@ -1,0 +1,3 @@
+https://github.com/boaaaang/CNN-Implementation-in-Verilog
+
+https://github.com/grant4001/MNIST_Classification_FPGA
