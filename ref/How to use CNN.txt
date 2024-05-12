@@ -1,0 +1,86 @@
+1) Dataset 을 불러옴
+python : 
+	mnist = tf.keras.datasets.mnist
+	(x_train, y_train), (x_test, y_test) = mnist.load_data()
+	# normalize
+	x_train, x_test = x_train / 255.0, x_test / 255.0
+	# MNIST 에서 사용하는 train data shape : (50000, 32, 32, 3) --> (샘플 수, 높이, 너비, 채널(rgb == 3))
+
+2) 모델 정의
+python : 
+	model = tf.keras.models.Sequential([
+    	tf.keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)),
+    	tf.keras.layers.MaxPooling2D((2, 2)),
+    	tf.keras.layers.Conv2D(64, (3, 3), activation='relu'),
+    	tf.keras.layers.MaxPooling2D((2, 2)),
+    	tf.keras.layers.Conv2D(64, (3, 3), activation='relu'),
+    	tf.keras.layers.Flatten(),
+    	tf.keras.layers.Dense(64, activation='relu'),
+    	tf.keras.layers.Dense(10, activation='softmax')
+	])
+
+3) 모델 컴파일 및 훈련
+python : 
+	model.compile(optimizer='adam',
+              loss='sparse_categorical_crossentropy',
+              metrics=['accuracy'])
+	model.fit(x_train.reshape(-1, 28, 28, 1), y_train, epochs=5, validation_data=(x_test.reshape(-1, 28, 28, 1), y_test))
+
+
+
+
+---------------------------------------------------------------------------------------------------------
+Verilog 로 이식하기
+1) Dataset 생성을 위한 Data 받아오기(Dataset 만들기, 실시간 camera에서 받아옴)
+Camera : QQVGA(160x120) or QVGA(320x240) format
+If QQVGA, 19,200 pixels per 1 frame
+If QVGA, 76,800 pixels per 1 frame
+If VGA, 307,200 pixels per 1 frame
+
+[
+OV7670 supports above resolutions.
+일단 QQVGA 로 한다고 하고
+확실하지 않음) 1 프레임에 19KB * 3 필요함(color image(rgb888))
+일반적으로 생각했을 때는 이런데 얘가 한 픽셀마다 값을 계산할 수 있음(정규화 안 시켰을 때 정확하게 나옴)
+고로 한 픽셀마다 계산했다고 치면 19,200 clocks
+
+50Mhz 를 가지는 기기는 1 clock 당 20ns 를 가짐
+19,200 * 20ns = 384,000 ns = 384us = 0.384ms per 1 frame
+10 frames for 3.84ms, 60 frames for 23.04ms
+
+추가) VGA(640*480) 으로 한다면 
+307,200 * 20ns = 6,144,000 ns = 6,144 us = 6.144 ms per 1 frame
+60 frame for 368.64 ms = 0.368s
+하지만 OV7670이 1 frame 을 빼내는 데는 784 * 510 = 399,840 clocks 를 사용함
+1 frame for about 8ms
+60 frames for 480ms.
+답답하지 않게 가능은 할 듯, 근데 OV7670이 input clock 으로 25Mhz를 받는다는게 문제
+딱 두배 쳐서 1s per 60 frames. RGB(565) 치면 프레임 반으로 또 떨어짐
+]
+
+
+
+2) 모델 구축 및 학습
+순차적으로 진행, 
+Conv2d : 
+	필터와 입력의 합성곱 계산, 출력에 저장
+	(특징 맵 개수, 필터 크기, 활성화 함수, 입력 함수(높이, 너비, 채널))
+
+MaxPooling2d :
+
+
+flatten :
+
+
+dense :
+
+
+compile :
+
+
+fit : 
+
+
+
+
+
