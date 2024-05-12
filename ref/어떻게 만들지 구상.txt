@@ -8,18 +8,18 @@
 구체적으로 어떻게 달성할 건지 ?
 1) 카메라로 캡처 : 1 pixel 당 2Byte의 Data를 받음. RGB565 format을 사용함.
 	매 클럭이 아닌 2B의 데이터가 모두 들어왔을 때 다음 작업을 시작한다.(카운터를 사용한다 0, 1, 0...)
+	
 	2Byte의 컬러 이미지(1 pixel)가 들어오면 0~1 값 사이로 정규화를 한다.
-
 2) CNN & object detection phase
 	모델 구축, 학습, xxx...
 	추가해야 할 내용 다수
-
+	스테레오 비전 : 찾은 이미지에서 농작물까지의 거리 계산
 
 
 
 3) 결과 출력(모니터 출력)
 	HDMI interface 를 통해 CNN에서 처리된 이미지를 받아와서 출력한다.
-	PIL library 가 없으므로 detect 한 것을 박스 형태로 감싸는 것은 여기서는 불가능, CNN에서 처리해야 함(anchor box 형태가 될 듯).
+	PIL (library) 가 없으므로 detect 한 것을 박스 형태로 감싸는 것은 여기서는 불가능, CNN에서 처리해야 함(anchor box 형태가 될 듯).
 
 
 ref : object detection
