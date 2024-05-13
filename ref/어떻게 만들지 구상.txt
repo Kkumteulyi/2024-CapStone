@@ -24,3 +24,8 @@
 
 ref : object detection
 https://colab.research.google.com/drive/15cRmY36JkM4EiV30FzBQXv0rPy5AKk41?usp=sharing#scrollTo=DthPdZhPbk_m
+
+내용은 크게 2가지로 구성될 것 같음
+1) 파이썬으로 내용 구성
+2) Verilog, FPGA 로 이식
+구성 내용 순서 : 캠 2개를 사용, 정상적으로 PC와 통신하는지 확인 / 캠에서 이미지를 정상적으로 받아옴(OV7670, VGA, (verilog : I2C interface)) / 가정) 과수원에서 지금 캠으로 사과나무를 찍는 중, 사과 오브젝트를 찾고, 수확할 수 있는지 확인해야 함. (CNN, object detection, 모델 학습 필요) / 수확 확인을 위한 크기 측정을 위해 거리에 따른 크기 비율 구하기(특대, 대, 중 사이즈 등 나뉨) / 오브젝트까지의 거리는 스테레오비전 알고리즘을 사용 / 찾은 오브젝트까지의 거리, 수확 여부를 디스플레이에 표시(HDMI, VGA, rgb or grayscale)
