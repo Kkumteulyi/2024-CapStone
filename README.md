@@ -13,7 +13,7 @@
     <td align="center"><a href="https://github.com/Kkumteulyi"><img src="https://avatars.githubusercontent.com/u/127104912?v=4" width="100px;" alt=""/>
   </tr>
     <tr>
-    <td align="center"><a href="https://github.com/miniron-v" title="Code">Yunhyeok Jeong</a></td>
+    <td align="center"><a href="https://github.com/Hipensan" title="Code">Yunhyeok Jeong</a></td>
     <td align="center"><a href="https://github.com/Kkumteulyi" title="Code">Donggeun Cha</a></td>
   </tr>
 </table>
