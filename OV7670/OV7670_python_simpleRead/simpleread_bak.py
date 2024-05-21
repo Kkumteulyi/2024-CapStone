@@ -1,6 +1,6 @@
 import serial
 import numpy as np
-import cv2  # Add OpenCV for real-time video display
+from bmp import BMP
 import time
 
 COMMAND = ['*', 'R', 'D', 'Y', '*']
@@ -29,6 +29,7 @@ class SimpleRead:
         self.serial_port = serial.Serial(port_name, 1000000, timeout=1)
         self.array1 = np.zeros((HEIGHT, WIDTH), dtype=np.uint32)
         self.array2 = np.zeros((WIDTH, HEIGHT), dtype=np.uint32)
+        self.bmp = BMP()
         self.run()
 
     def run(self):
@@ -53,32 +54,21 @@ class SimpleRead:
                             raise Exception("Serial port read error after retries")
                         self.array1[y][x] = (i & 0xFF) << 16 | (i & 0xFF) << 8 | (i & 0xFF)
 
-                # Convert array1 to a format suitable for OpenCV
-                image = self.array1.astype(np.uint8)
-                image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)  # Convert grayscale to BGR
+                for y in range(HEIGHT):
+                    for x in range(WIDTH):
+                        self.array2[x][y] = self.array1[y][x]
 
-                # Crop the image for stereo vision (left and right 90%)
-                left_image = image[:, :int(WIDTH * 0.9)]
-                right_image = image[:, int(WIDTH * 0.1):]
-
-                # Display the images
-                cv2.imshow('Left Image', left_image)
-                cv2.imshow('Right Image', right_image)
-
-                # Check for exit
-                if cv2.waitKey(1) & 0xFF == ord('q'):
-                    break
-
+                self.bmp.saveBMP(f"c:/out/{image_count}.bmp", self.array2)
+                print(f"Saved image: {image_count}")
                 image_count += 1
-
+                
                 # Reset the serial port input buffer
                 self.serial_port.reset_input_buffer()
 
         except Exception as e:
             print(e)
-        finally:
             self.serial_port.close()
-            cv2.destroyAllWindows()
+            return
 
 if __name__ == "__main__":
     SimpleRead()
