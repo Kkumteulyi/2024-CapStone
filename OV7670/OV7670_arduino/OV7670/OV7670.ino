@@ -300,12 +300,12 @@ const struct regval_list qvga_ov7670[] PROGMEM = {
   { REG_VREF, 0x0a },
 
 
-/*  { REG_HSTART, 0x16 },
-  { REG_HSTOP, 0x04 },
-  { REG_HREF, 0x24 },
-  { REG_VSTART, 0x02 },
-  { REG_VSTOP, 0x7a },
-  { REG_VREF, 0x0a },*/
+  // { REG_HSTART, 0x16 },
+  // { REG_HSTOP, 0x04 },
+  // { REG_HREF, 0x24 },
+  // { REG_VSTART, 0x02 },
+  // { REG_VSTOP, 0x7a },
+  // { REG_VREF, 0x0a },
   { 0xff, 0xff }, /* END MARKER */
 };
 
@@ -432,6 +432,7 @@ const struct regval_list ov7670_default_regs[] PROGMEM = {//from the linux drive
   { 0x79, 0x26 },
   { 0xff, 0xff }, /* END MARKER */
 };
+
 
 
 void error_led(void){
