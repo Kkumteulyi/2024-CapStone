@@ -1,0 +1,4 @@
+https://github.com/indrekluuk/LiveOV7670
+
+
+라이브러리 adafruit_ov7670 설치 필요
