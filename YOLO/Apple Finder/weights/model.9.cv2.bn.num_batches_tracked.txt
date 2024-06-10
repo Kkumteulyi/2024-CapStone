@@ -1,0 +1,8 @@
+Weights Information:
+# weights ver.2
+
+Model Path: ../best.pt
+Model Generated Time:   24-06-04, 20:02
+
+Layer: model.9.cv2.bn.num_batches_tracked | Size: torch.Size([])
+tensor(1)
