@@ -1,8 +1,0 @@
-Weights Information:
-# weights ver.2
-
-Model Path: best.pt
-Model Generated Time:   24-06-04, 20:02
-
-Layer: model.0.bn.bias | Size: torch.Size([16])
-tensor([  1.3652, -10.9375,   0.8291,   1.5391,   6.6172,   1.5850,   4.4141,  -1.1436,   1.7500,   1.1104,  -7.4453,   2.1777,  -0.8330,   1.3740,  -0.2383,   1.8174])

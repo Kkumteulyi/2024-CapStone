@@ -1,8 +1,0 @@
-Weights Information:
-# weights ver.2
-
-Model Path: best.pt
-Model Generated Time:   24-06-04, 20:02
-
-Layer: model.0.bn.running_var | Size: torch.Size([16])
-tensor([0.0166, 0.0089, 0.0858, 0.0156, 0.0009, 0.0892, 0.0006, 0.0178, 0.0175, 0.0927, 0.0129, 0.0016, 0.0017, 0.0175, 0.0062, 0.0967])
