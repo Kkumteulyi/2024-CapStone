@@ -14,7 +14,7 @@ stop_thread = threading.Event()
 # 카메라 각도를 상수로 정의
 CAM_ANGLE = 19
 distance = None  # 전역 변수로 distance 선언
-COM_PORT = 'COM3'
+COM_PORT = 'COM5'
 
 #############################
 ## V I D E O _ S T R E A M ##
