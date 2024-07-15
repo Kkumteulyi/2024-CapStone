@@ -1,10 +1,8 @@
 import cv2
 import torch
-import torchvision
-from torchvision import transforms
+from ultralytics import YOLO
 from PIL import Image
 import serial
-import binascii
 import threading
 import math
 
@@ -20,51 +18,40 @@ COM_PORT = 'COM5'
 ## V I D E O _ S T R E A M ##
 #############################
 
-# 객체 탐지 모델 로드 (여기서는 Faster R-CNN 예제 사용)
-model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=True)
-model.eval()
-
-# 이미지 변환 정의
-transform = transforms.Compose([
-    transforms.ToTensor()
-])
+# 모델 로드
+model = YOLO('C:/Users/admin/Desktop/0711/best.pt')
 
 def detect_objects(frame):
-    # OpenCV 이미지에서 PIL 이미지로 변환
-    img = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
-    img = transform(img)
-    img = img.unsqueeze(0)  # 배치 차원 추가
-    
-    with torch.no_grad():
-        predictions = model(img)
-    
-    return predictions[0]
+    results = model(frame)
+    return results
 
 def draw_boxes(frame, predictions, distance):
-    boxes = predictions['boxes'].cpu().numpy()
-    scores = predictions['scores'].cpu().numpy()
+    for pred in predictions:
+        boxes = pred.boxes.xyxy
+        scores = pred.boxes.conf
 
-    for box, score in zip(boxes, scores):
-        if score > 0.5:  # 신뢰도가 50% 이상인 경우만 표시
-            x1, y1, x2, y2 = box
-            cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), (255, 0, 0), 2)
-            cv2.putText(frame, f'{score:.2f}', (int(x1), int(y1)-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255, 0, 0), 2)
-            
-            # 객체가 차지하는 비율 계산
-            k = abs(x2 - x1)
-            n = k / 640  # 객체의 가로 길이를 카메라 화면의 가로 길이로 나눔
+        for box, score in zip(boxes, scores):
+            if score > 0.5:  # 신뢰도가 50% 이상인 경우만 표시
+                x1, y1, x2, y2 = map(int, box)
+                score = score.item()
+                cv2.rectangle(frame, (x1, y1), (x2, y2), (255, 0, 0), 2)
+                cv2.putText(frame, f'{score:.2f}', (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255, 0, 0), 2)
 
-            # 객체의 거리 계산
-            if distance is not None:
-                l = 2 * distance * math.tan(math.radians(CAM_ANGLE)) * n
-                cv2.putText(frame, f'Size: {l:.2f} mm', (int(x1), int(y2)), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
+                # 객체가 차지하는 비율 계산
+                k = abs(x2 - x1)
+                n = k / 640  # 객체의 가로 길이를 카메라 화면의 가로 길이로 나눔
+
+                # 객체의 거리 계산
+                if distance is not None:
+                    l = 2 * distance * math.tan(math.radians(CAM_ANGLE)) * n
+                    cv2.putText(frame, f'Size: {l:.2f} mm', (x1, y2), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
 
 def Stream_Video():
     video = cv2.VideoCapture(0)
     
     if not video.isOpened():
         print("Can't open video")
-        exit()
+        return
 
     # 비디오 프레임의 해상도를 640x480으로 설정
     video.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
