@@ -1,8 +1,8 @@
 module SCCB 
 #(
 	parameter SCCB_F = 100_000, 		// SCCB bus frequency = 100Khz
-	// parameter DEV_F = 50_000_000 	// Device frequency = 50Mhz
-	parameter DEV_F = 500_000 // for simulation
+	parameter DEV_F = 50_000_000 	// Device frequency = 50Mhz
+	// parameter DEV_F = 500_000 // for simulation
 )( 
 	input i_Clk, 
 	input i_Rst,
@@ -246,8 +246,3 @@ begin
 
 end
 endmodule
-
-
-
-
-// 어딘가에서 무한 반복 중
