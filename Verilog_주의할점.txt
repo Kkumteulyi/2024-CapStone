@@ -1,0 +1,19 @@
+Verilog HW 설계에 있어서 주의할 점
+
+always@(상승 엣지, 하강 엣지) 등으로 표현한 부분 내에서는
+r_timer <= r_timer + 1; 과 같은 표현을 사용해도 상관 없다.
+
+
+단, current register / next register 구조를 쓰는 부분에서
+always@* ~ 문장 내에서는
+r_timer <= r_timer + 1; 과 같은 표현을 사용하면 안 된다.
+단순하게 생각하면
+always@* 로 해당 always 문이 포함하고 있는 내부의 어떤 변수의 값이라도 바뀌게 되면
+다시 실행이 된다.
+결론은 무한으로 계속 반복된다는 뜻.(잘못된 구조)
+
+
+따라서 timer 를 사용하거나 shift 등을 사용해야 하는 경우(r_timer <= {r_timer[6:0], 1'b0} 등과 같은)
+current/next 구조를 사용해서 값을 기록하도록 하자.
+ex) nextReg <= {currentReg[6:0], 1'b0};
+이렇게 하면 내부의 값이 어떻게 변하더라도 nextReg 에 들어가는 값은 고정됨.(클럭이 변하기 전까지는)
